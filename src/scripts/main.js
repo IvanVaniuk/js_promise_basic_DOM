@@ -6,24 +6,21 @@ const logo = document.querySelector('.logo');
 function createMessage(message, isError) {
   const element = document.createElement('div');
 
-  if (isError) {
-    element.className = 'message';
-  } else {
-    element.className = 'message error-message';
-  }
-
+  element.className = isError ? 'message error-message' : 'message';
   element.textContent = message;
   document.body.appendChild(element);
 }
 
 const promise1 = new Promise((resolve) => {
-  logo.addEventListener(
-    'click',
-    () => {
-      resolve('Promise was resolved!');
-    },
-    { once: true },
-  );
+  if (logo) {
+    logo.addEventListener(
+      'click',
+      () => {
+        resolve('Promise was resolved!');
+      },
+      { once: true },
+    );
+  }
 });
 
 const promise2 = new Promise((resolve, reject) => {
@@ -33,9 +30,9 @@ const promise2 = new Promise((resolve, reject) => {
 });
 
 promise1
-  .then((val) => createMessage(val, true))
-  .catch((val) => createMessage(val, false));
+  .then((val) => createMessage(val, false))
+  .catch((err) => createMessage(err.message, true));
 
 promise2
-  .then((val) => createMessage(val, true))
-  .catch((val) => createMessage(val, false));
+  .then((val) => createMessage(val, false))
+  .catch((err) => createMessage(err.message, true));
